@@ -3,7 +3,7 @@ from os import path as ospath, environ, remove as osremove
 from subprocess import run as srun, call as scall
 from pkg_resources import working_set
 from requests import get as rget
-from dotenv import load_doten
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
 if ospath.exists('log.txt'):
@@ -38,8 +38,6 @@ if DATABASE_URL is not None:
     conn = MongoClient(DATABASE_URL)
     db = conn.mltb
     if config_dict := db.settings.config.find_one({'_id': bot_id}):  #retrun config dict (all env vars)
-        environ['UPSTREAM_REPO'] = config_dict['UPSTREAM_REPO']
-        environ['UPSTREAM_BRANCH'] = config_dict['UPSTREAM_BRANCH']
         environ['UPDATE_PACKAGES'] = config_dict.get('UPDATE_PACKAGES', 'False')
     conn.close()
 
@@ -48,13 +46,8 @@ if UPDATE_PACKAGES.lower() == 'true':
     packages = [dist.project_name for dist in working_set]
     scall("pip install " + ' '.join(packages), shell=True)
 
-UPSTREAM_REPO = environ.get('UPSTREAM_REPO', '')
-if len(UPSTREAM_REPO) == 0:
-   UPSTREAM_REPO = None
-
-UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH', '')
-if len(UPSTREAM_BRANCH) == 0:
-    UPSTREAM_BRANCH = 'master'
+UPSTREAM_REPO = 'https://github.com/5hojib/Luna-Portal'
+UPSTREAM_BRANCH = 'master'
 
 if UPSTREAM_REPO is not None:
     if ospath.exists('.git'):
