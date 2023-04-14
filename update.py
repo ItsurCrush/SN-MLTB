@@ -3,7 +3,7 @@ from os import path as ospath, environ, remove as osremove
 from subprocess import run as srun, call as scall
 from pkg_resources import working_set
 from requests import get as rget
-from dotenv import load_dotenv
+from dotenv import load_doten
 from pymongo import MongoClient
 
 if ospath.exists('log.txt'):
